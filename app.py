@@ -1,20 +1,18 @@
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify
-from pymongo import MongoClient
+from flask import Flask, render_template, request, jsonify 
 
-dotenv_path = join(dirname(__file__), ".env")
+from pymongo import MongoClient
+dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-MONGODB_URI = os.environ.get("mongodb+srv://Fauzanazh:Fauzanazh21@cluster0.ozrokjw.mongodb.net/?retryWrites=true&w=majority")
+MONGODB_URI= os.environ.get("MONGODB_URI")
+DB_NAME = os.environ.get("DB_NAME")
+client = MongoClient (MONGODB_URI)
 
-DB_NAME = os.environ.get("dbsparta")
-
-client = MongoClient("mongodb+srv://Fauzanazh:Fauzanazh21@cluster0.ozrokjw.mongodb.net/?retryWrites=true&w=majority")
-
-db = client.dbsparta
-app = Flask(__name__)
+db = client ["dbsparta"]
+app = Flask (__name__)
 
 
 @app.route("/")
@@ -24,7 +22,6 @@ def home():
 
 @app.route("/homework", methods=["POST"])
 def homework_post():
-    # sample_receive = request.form['sample_give']
     name_receive = request.form["name_give"]
     comment_receive = request.form["comment_give"]
     doc = {
